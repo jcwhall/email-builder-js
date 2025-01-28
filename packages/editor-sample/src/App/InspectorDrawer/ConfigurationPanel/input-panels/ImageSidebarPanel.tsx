@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   VerticalAlignBottomOutlined,
   VerticalAlignCenterOutlined,
   VerticalAlignTopOutlined,
 } from '@mui/icons-material';
-import { Stack, ToggleButton } from '@mui/material';
+import { Button, Stack, styled, ToggleButton } from '@mui/material';
 import { ImageProps, ImagePropsSchema } from '@usewaypoint/block-image';
 
 import BaseSidebarPanel from './helpers/BaseSidebarPanel';
@@ -13,6 +13,19 @@ import RadioGroupInput from './helpers/inputs/RadioGroupInput';
 import TextDimensionInput from './helpers/inputs/TextDimensionInput';
 import TextInput from './helpers/inputs/TextInput';
 import MultiStylePropertyPanel from './helpers/style-inputs/MultiStylePropertyPanel';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 type ImageSidebarPanelProps = {
   data: ImageProps;
@@ -20,6 +33,22 @@ type ImageSidebarPanelProps = {
 };
 export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelProps) {
   const [, setErrors] = useState<Zod.ZodError | null>(null);
+  const [base64Image, setBase64Image] = useState(data.props?.url);
+
+  useEffect(() => {
+    const url = base64Image;
+    updateData({ ...data, props: { ...data.props, url } });
+  }, [base64Image]);
+
+  const uploadAndEncodeImage = (newFile: Blob) => {
+    if (newFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBase64Image(reader.result);
+      };
+      reader.readAsDataURL(newFile);
+    }
+  }
 
   const updateData = (d: unknown) => {
     const res = ImagePropsSchema.safeParse(d);
@@ -33,14 +62,21 @@ export default function ImageSidebarPanel({ data, setData }: ImageSidebarPanelPr
 
   return (
     <BaseSidebarPanel title="Image block">
-      <TextInput
-        label="Source URL"
-        defaultValue={data.props?.url ?? ''}
-        onChange={(v) => {
-          const url = v.trim().length === 0 ? null : v.trim();
-          updateData({ ...data, props: { ...data.props, url } });
-        }}
-      />
+
+      <Button
+        component="label"
+        role={undefined}
+        variant="contained"
+        tabIndex={-1}
+        startIcon={<AddPhotoAlternateIcon />}
+      >
+        Upload Image
+        <VisuallyHiddenInput
+          type="file"
+          accept="image/*"
+          onChange={(event) => uploadAndEncodeImage(event.target.files![0])}
+        />
+      </Button>
 
       <TextInput
         label="Alt text"
