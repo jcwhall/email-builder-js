@@ -1,18 +1,15 @@
 <div align="center">
   <h1>EmailBuilder.js Fork - Support Embedding Local Image Files in HTML Files.</h1>
-  <p align="center">
-    <a href="https://usewaypoint.github.io/email-builder-js/#sample/reservation-reminder">Demo / Playground</a>&emsp;&middot;&emsp;
-    <a href="https://www.emailbuilderjs.com">EmailBuilderJS.com</a>&emsp;&middot;&emsp;
-    <a href="https://github.com/usewaypoint/email-builder-js">GitHub</a>
-  </p>
 </div>
 
 ## Overview
-
-Implemented Feature Request #98 - Support Embedding Local Image Files in HTML Files. Images are now uploaded and base64 encoded, rather than using URLs
+Implemented <a href="https://github.com/usewaypoint/email-builder-js/issues/98">Feature Request #98</a> - Support Embedding Local Image Files in HTML Files. 
+- Applies to the Self Hosted Editor
+- Images can now be uploaded from the local file system, rather than the current system using URLs (links to externally hosted images)
+- These images are base64 encoded and set as the img src
+- The encoded image is stored within the HTML/JSON and works as before (Import/Export, etc)
 
 <br>
-
 
 
 ## Self hosting the Editor
@@ -30,3 +27,9 @@ Quick start:
 
 ---
 
+For more information:
+<p>
+    <a href="https://usewaypoint.github.io/email-builder-js/#sample/reservation-reminder">Demo / Playground</a>&emsp;&middot;&emsp;
+    <a href="https://www.emailbuilderjs.com">EmailBuilderJS.com</a>&emsp;&middot;&emsp;
+    <a href="https://github.com/usewaypoint/email-builder-js">GitHub</a>
+  </p>
